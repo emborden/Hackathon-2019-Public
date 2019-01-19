@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -33,24 +35,59 @@ var gatherings []Gathering
 
 //Get all Gatherings
 func getGatherings(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(gatherings)
 }
 
 //get single Gathering
 func getGathering(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r) //get params
+	//loop through gatherings and find id
+	for _, item := range gatherings {
+		if item.ID == params["id"] {
+			json.NewEncoder(w).Encode(item)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(&Gathering{})
 }
 
 // create a new Gathering
 func createGathering(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	var gathering Gathering
+	_ = json.NewDecoder(r.Body).Decode(&gathering)
+	gathering.ID = strconv.Itoa(rand.Intn(10000000)) //mock not safe
+	gatherings = append(gatherings, gathering)
+	json.NewEncoder(w).Encode(gathering)
 }
 func updateGathering(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range gatherings {
+		if item.ID == params["id"] {
+			gatherings = append(gatherings[:index], gatherings[index+1:]...)
+			var gathering Gathering
+			_ = json.NewDecoder(r.Body).Decode(&gathering)
+			gathering.ID = params["id"] //strconv.Itoa(rand.Intn(10000000)) //mock not safe
+			gatherings = append(gatherings, gathering)
+			json.NewEncoder(w).Encode(gathering)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(gatherings)
 }
 func deleteGathering(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range gatherings {
+		if item.ID == params["id"] {
+			gatherings = append(gatherings[:index], gatherings[index+1:]...)
+			break
+		}
+	}
+	json.NewEncoder(w).Encode(gatherings)
 }
 func main() {
 	//Init Router
@@ -65,7 +102,7 @@ func main() {
 	r.HandleFunc("/api/Gatherings/{id}", getGathering).Methods("GET")
 	r.HandleFunc("/api/Gatherings", createGathering).Methods("POST")
 	r.HandleFunc("/api/Gatherings/{id}", updateGathering).Methods("PUT")
-
+	r.HandleFunc("/api/Gatherings/{id}", deleteGathering).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", r))
 
 }
