@@ -15,13 +15,13 @@ CREATE TABLE photo
 (
 	photo_id serial PRIMARY KEY,
 	location text
-)
+);
 
 CREATE TABLE video
 (
 	video_id serial PRIMARY KEY,
 	location text
-)
+);
 
 CREATE TABLE post
 (
