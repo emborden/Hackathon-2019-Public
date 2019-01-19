@@ -53,6 +53,7 @@ func deleteGathering(w http.ResponseWriter, r *http.Request) {
 
 }
 func main() {
+	initApp()
 	//Init Router
 	r := mux.NewRouter()
 	//mockData - @todo - implment DB
