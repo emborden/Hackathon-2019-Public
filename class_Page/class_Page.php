@@ -17,7 +17,8 @@ session_start();
               <div class="boxed blue">
                 <font size="10">POSTS</font>
             </b>
-            <span style="float:right;"><a href="file:///C:/Users/Sifat%20Syed/Desktop/Hackathon2019/post.html?"><button class="green_button" type="button"><font size="5"><b>New Post</b></font></button></a></span>
+			
+            <span style="float:right;"><a href="post.php"><button class="green_button" type="button"><font size="5"><b>New Post</b></font></button></a></span>
           </div><br>
           <div class="boxed">
 <?php
@@ -36,7 +37,8 @@ try {
     //$stmt->bindParam(':lastname', $lastname);
     //$stmt->bindParam(':email', $email);
 	$stmt->bindParam(':gname',$gname);
-	$gname = $_GET["class"];
+	$gname = (isset($_GET["class"]))?$_GET["class"]:1;
+	$_SESSION["gname"]= $gname;
 	$stmt->execute();
 	$result = $stmt->fetch();
     //if($result["pass"]==$_POST["password"])$_SESSION["User"]=$handle;	
@@ -54,14 +56,14 @@ ORDER BY Customers.CustomerName;
 	{
 		echo "<div><p>".$row["handle"]." ".$row["votes"]."</p>";
 	$debianMan = $conn->prepare("SELECT location FROM Video WHERE video_id=:video_id");
-	$debianMan ->bindParam('video_id',$row["post.video_id"]);
+	$debianMan ->bindParam('video_id',$row["video_id"]);
 	$debianMan ->execute();
 	while($wander = $debianMan->fetch(PDO::FETCH_ASSOC))
 	{
   echo'<video width="320" height="240" controls><source src="'.$wander["location"].'" type="video/mp4">Your browser does not support the video tag.</video>';
 	}
 	$debianMan = $conn->prepare("SELECT location FROM Photo WHERE photo_id=:photo_id");
-	$debianMan->bindParam(":photo_id",$row["post.photo_id"]);
+	$debianMan->bindParam(":photo_id",$row["photo_id"]);
 	$debianMan->execute();
 	while($wander = $debianMan->fetch(PDO::FETCH_ASSOC))
 	{
