@@ -1,0 +1,58 @@
+<?php 
+session_start();
+?>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="hack.css">
+</head>
+
+<body style="background-color:azure;">
+  <form action="../validation/validation.php" method="post">
+    <p style="text-align:left;"><font face="arial">Username:</font><input type="text" placeholder="Username or Email" name="username">
+      <font face="arial">Password:</font><input type="password" placeholder="8 characters minimum" name="password">
+      <input type="submit" value="Log In">
+
+    <span style="float:right;"><font face="arial">Class:</font><input type="text" placeholder="Search for classes.." name="class">
+      <input type="submit" value="Submit"></span>
+  </p>
+  </form>
+  <?php 
+  if(!isset($_SESSION['User'])&&!empty($_SESSION["User"]))
+	  echo "<p>".$_SESSION["User"]."</p>";
+  ?>
+  <div class="boxed blue " align="center">
+    <p>
+      <font face="gabriola" size="20" color="black"><b>Semester Surfer!!</b></font>
+      <br>
+      <font face="gabriola" size="5" color="black"><b>Welcome!!</b></font>
+      <font face="gabriola" size="5" color="black"><b>Here you can find all the notes for your class from all semesters that you are searching for!</b></font>
+    </p>
+  </div>
+
+  <p>
+    <div class="boxed" align="left">
+      <img src="shutterstock_106310195-750x500.jpg" alt="Students Smiling" width="620" hieght="500">
+      <img src="shutterstock_252583705-750x500.jpg" alt="Students Studying" width="620" hieght="500">
+    </div>
+  </p>
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+    <a href="#about">About</a>
+    <a href="#base">Base</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
+    <a href="#custom">Custom</a>
+    <a href="#support">Support</a>
+    <a href="#tools">Tools</a>
+  </div>
+</div>
+
+</body>
+
+</html>
