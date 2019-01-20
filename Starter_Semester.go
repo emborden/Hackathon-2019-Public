@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -32,6 +33,17 @@ type UserContent struct {
 
 //Init books var as a slice Gathering struct
 var gatherings []Gathering
+
+//Create Index Page
+func createIndexPage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	content, err := ioutil.ReadFile("web_client/semesterSurfer.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(content)
+
+}
 
 //Get all Gatherings
 func getGatherings(w http.ResponseWriter, r *http.Request) {
@@ -99,6 +111,7 @@ func main() {
 	gatherings = append(gatherings, Gathering{ID: "3", Name: "CSCE 451"})
 	gatherings = append(gatherings, Gathering{ID: "4", Name: "CSCE 231"})
 	//Route Handlers /Endpoints
+	r.HandleFunc("/index", createIndexPage).Methods("GET")
 	r.HandleFunc("/api/Gatherings", getGatherings).Methods("GET")
 	r.HandleFunc("/api/Gatherings/{id}", getGathering).Methods("GET")
 	r.HandleFunc("/api/Gatherings", createGathering).Methods("POST")
